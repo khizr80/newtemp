@@ -1438,17 +1438,18 @@ namespace temp {
 				String^ connString = rr;
 				SqlConnection sqlConn(connString);
 				sqlConn.Open();
-				String^ query = "SELECT [first_name] FROM doctor";
+				String^ query = "SELECT [id], [first_name] FROM doctor";
 				SqlCommand^ command = gcnew SqlCommand(query, % sqlConn);
 				SqlDataReader^ reader = command->ExecuteReader();
 				make_appointment_panel_combo_box->Items->Clear();
 				while (reader->Read()) {
-					make_appointment_panel_combo_box->Items->Add(reader->GetString(0));
+					String^ doctorInfo = reader->GetString(1) + " ID:" + reader->GetString(0) + "";
+					make_appointment_panel_combo_box->Items->Add(doctorInfo);
 				}
 				reader->Close();
 				sqlConn.Close();
 			}
-			catch (Exception^ ex) 
+			catch (Exception^ ex)
 			{
 				MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
 			}
@@ -1463,6 +1464,21 @@ namespace temp {
 			DateTime now = DateTime::Now;
 			DateTime selectedDate = dateTimePicker1->Value;
 			String^ doctor_name = make_appointment_panel_combo_box->SelectedItem->ToString();
+			String^ y = "";
+			int length = doctor_name->Length;
+			bool t = false;
+			for (int i = 0;i < length;i++)
+			{
+				if (doctor_name[i] == ':')
+				{
+					t = true;
+				}
+				else if(t==true)
+				{
+					y += doctor_name[i];
+				}
+				
+			}
 			if (selectedDate < now)
 			{
 				MessageBox::Show("invalid date", "Date error", MessageBoxButtons::OK);
@@ -1470,7 +1486,7 @@ namespace temp {
 			else
 			{
 				String ^x=userp->getid();
-				userp->make_appointment(selectedDate,doctor_name,x);
+				userp->make_appointment(selectedDate,y,x);
 			}
 		}
 };

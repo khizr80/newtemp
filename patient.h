@@ -197,7 +197,10 @@ public:
 			//return 0;
 		}
 	}
+	void cancel_appointment()
+	{
 
+	}
 	String^ getid()
 	{
 		return id;
