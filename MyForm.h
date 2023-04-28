@@ -1333,23 +1333,11 @@ private: System::Windows::Forms::ComboBox^ cancelappointment_combobox;
 			String^ con = view_detail_panel_password_textbox->Text;
 			if (ismain_panel_patient_button == 1)
 			{
-				int x = userp->change_detail(f, l, id, p, in, se, a, ph);
-				if (x == 2)
-					MessageBox::Show("Please enter all the fields", "One or more empty fields", MessageBoxButtons::OK);
-				else if (x == 0)
-					MessageBox::Show("changed successfully", "change information", MessageBoxButtons::OK);
-				else
-					MessageBox::Show("Failed to register new user", "Register Failure", MessageBoxButtons::OK);
+				 userp->change_detail(f, l, id, p, in, se, a, ph);
 			}
 			else if(ismain_panel_doctor_button == 1)
 			{
-				int x = userd->change_detail(f, l, id, p, in, se,a, ph);
-				if (x == 2)
-					MessageBox::Show("Please enter all the fields", "One or more empty fields", MessageBoxButtons::OK);
-				else if (x == 0)
-					MessageBox::Show("changed successfully", "change information", MessageBoxButtons::OK);
-				else
-					MessageBox::Show("Failed to register new user", "Register Failure", MessageBoxButtons::OK);
+				userd->change_detail(f, l, id, p, in, se,a, ph);
 			}
 			else
 			{

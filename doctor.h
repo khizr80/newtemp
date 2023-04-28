@@ -23,7 +23,6 @@ public:
 			MessageBox::Show("Please enter email and password", "Email or Password Empty", MessageBoxButtons::OK);
 			return 0;
 		}
-
 		try {
 			String^ connString = rr;
 			SqlConnection sqlConn(connString);
@@ -48,8 +47,7 @@ public:
 					//+ user->security_q + user->age + user->phone_no + user->role, "message", MessageBoxButtons::OK);
 			}
 			else {
-				MessageBox::Show("Email or password is incorrect",
-					"Email or Password Error", MessageBoxButtons::OK);
+				MessageBox::Show("Email or password is incorrect","Email or Password Error", MessageBoxButtons::OK);
 				return 0;
 			}
 		}
@@ -83,7 +81,7 @@ public:
 			MessageBox::Show("Id or security question incorrect", "Forget password Failure", MessageBoxButtons::OK);
 		}
 	}
-	int change_detail(String^ f, String^ l, String^ i, String^ p, String^ in, String^ se, String^ a, String^ ph)
+	void change_detail(String^ f, String^ l, String^ i, String^ p, String^ in, String^ se, String^ a, String^ ph)
 	{
 		id = i;
 		password = p;
@@ -96,7 +94,7 @@ public:
 		if (first_name->Length == 0 || last_name->Length == 0 || phone_no->Length == 0 || id->Length == 0
 			|| password->Length == 0 || specialization->Length == 0 || age->Length == 0)
 		{
-			return 2;
+			MessageBox::Show("Please enter all the fields", "One or more empty fields", MessageBoxButtons::OK);
 		}
 		try {
 			String^ connString = rr;
@@ -113,11 +111,12 @@ public:
 			command.Parameters->AddWithValue("@password", password);
 			command.Parameters->AddWithValue("@security_q", security_q);
 			command.ExecuteNonQuery();
-			return 0;
+			MessageBox::Show("changed successfully", "change information", MessageBoxButtons::OK);
+
 		}
 		catch (Exception^ ex)
 		{
-			return 1;
+			MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
 		}
 	}
 	void hiredoctor(String^ i, String^ p, String^ f, String^ l, String^ in, String^ a, String^ ph, String^ se, String^ con)
@@ -135,7 +134,6 @@ public:
 		if (first_name->Length == 0 || last_name->Length == 0 || phone_no->Length == 0 || id->Length == 0
 			|| password->Length == 0 || specialization->Length == 0 || age->Length == 0 || confirm_password->Length == 0)
 		{
-
 			MessageBox::Show("Please enter all the fields", "One or more empty fields", MessageBoxButtons::OK);
 			return;
 		}
@@ -175,16 +173,15 @@ public:
 			SqlCommand command(sqlQuery, % sqlConn);
 			command.Parameters->AddWithValue("@complain", x);
 			int rowsAffected = command.ExecuteNonQuery();
-
 			if (rowsAffected > 0) {
 				MessageBox::Show("Success", "Delete doctor", MessageBoxButtons::OK);		
 			}
 			else {
-				MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
+				MessageBox::Show("no doctor found with this id", "no docotor", MessageBoxButtons::OK);
 			}
 		}
 		catch (Exception^ e) {
-			return 0;
+			MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
 		}
 	}
 

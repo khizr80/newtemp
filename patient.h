@@ -129,7 +129,7 @@ public:
 			MessageBox::Show("Id or security question incorrect", "Forget password Failure", MessageBoxButtons::OK);
 		}
 	}
-	int change_detail(String^ f, String^ l, String^ i, String^ p, String^ in, String^ se, String^ a, String^ ph)
+	void change_detail(String^ f, String^ l, String^ i, String^ p, String^ in, String^ se, String^ a, String^ ph)
 	{
 		id = i;
 		password = p;
@@ -142,7 +142,7 @@ public:
 		if (first_name->Length == 0 || last_name->Length == 0 || phone_no->Length == 0 || id->Length == 0
 			|| password->Length == 0 || insurance_no->Length == 0 || age->Length == 0)
 		{
-			return 2;
+			MessageBox::Show("Please enter all the fields", "One or more empty fields", MessageBoxButtons::OK);
 		}
 		try {
 			String^ connString = rr;
@@ -159,11 +159,11 @@ public:
 			command.Parameters->AddWithValue("@password", password);
 			command.Parameters->AddWithValue("@security_q", security_q);
 			command.ExecuteNonQuery();
-			return 0;
+			MessageBox::Show("changed successfully", "change information", MessageBoxButtons::OK);
 		}
 		catch (Exception^ ex)
 		{
-			return 1;
+			MessageBox::Show("Failed to register new user", "Register Failure", MessageBoxButtons::OK);
 		}
 	}
 	void make_appointment(DateTime^ date, String^ doctor_id, String^ iid,String^doc_name)
