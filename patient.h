@@ -166,7 +166,7 @@ public:
 			return 1;
 		}
 	}
-	void make_appointment(DateTime^ date, String^ doctor_name, String^ iid)
+	void make_appointment(DateTime^ date, String^ doctor_id, String^ iid,String^doc_name)
 	{
 		try {
 			String^ connString = rr;
@@ -178,17 +178,19 @@ public:
 			SqlCommand countCommand(sqlCountQuery, % sqlConn);
 			countCommand.Parameters->AddWithValue("@date", date);
 			int appointmentCount = (int)countCommand.ExecuteScalar();
-			if (appointmentCount >= 3) {
+			if (appointmentCount >= 3) 
+			{
 				MessageBox::Show("Failed to make appointment", "Appointment limit reached", MessageBoxButtons::OK);
 				return;
 			}
 
 			// Insert new appointment
-			String^ sqlInsertQuery = "INSERT INTO [appointment] (doctor_name, patient_id, date) VALUES (@name, @id, @date);";
+			String^ sqlInsertQuery = "INSERT INTO [appointment] (doctor_id, patient_id, date,doctor_name) VALUES (@name, @id, @date,@doc_name);";
 			SqlCommand insertCommand(sqlInsertQuery, % sqlConn);
-			insertCommand.Parameters->AddWithValue("@name", doctor_name);
+			insertCommand.Parameters->AddWithValue("@name", doctor_id);
 			insertCommand.Parameters->AddWithValue("@date", date);
 			insertCommand.Parameters->AddWithValue("@id", iid);
+			insertCommand.Parameters->AddWithValue("@doc_name", doc_name);
 			insertCommand.ExecuteNonQuery();
 			MessageBox::Show("Success", "Appointment book", MessageBoxButtons::OK);
 		}

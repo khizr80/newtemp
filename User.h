@@ -14,10 +14,9 @@ public:
 	String^ confirm_password;
 	String^ age;
 	String^ rr = "Data Source=DESKTOP-9T5F2B3;Initial Catalog=mono;Integrated Security=True";
-	bool complain(String^ x)
+	void complain(String^ x)
 	{
 		try {
-
 			String^ connString = rr;
 			SqlConnection sqlConn(connString);
 			sqlConn.Open();
@@ -25,11 +24,11 @@ public:
 			SqlCommand command(sqlQuery, % sqlConn);
 			command.Parameters->AddWithValue("@complain", x);
 			command.ExecuteNonQuery();
-			
-			return 1;
+			MessageBox::Show("Success", "Complain enter", MessageBoxButtons::OK);
 		}
 		catch (Exception^ e) {
-			return 0;
+			MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
+
 		}
 	}
 };

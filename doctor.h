@@ -165,7 +165,7 @@ public:
 			MessageBox::Show("Failed to register new doctor", "Register Failure", MessageBoxButtons::OK);
 		}
 	}
-	bool firedoctor(String^ x)
+	void firedoctor(String^ x)
 	{
 		try {
 			String^ connString = rr;
@@ -177,10 +177,10 @@ public:
 			int rowsAffected = command.ExecuteNonQuery();
 
 			if (rowsAffected > 0) {
-				return 1;
+				MessageBox::Show("Success", "Delete doctor", MessageBoxButtons::OK);		
 			}
 			else {
-				return 0;
+				MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
 			}
 		}
 		catch (Exception^ e) {
