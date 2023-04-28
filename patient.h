@@ -143,6 +143,7 @@ public:
 			|| password->Length == 0 || insurance_no->Length == 0 || age->Length == 0)
 		{
 			MessageBox::Show("Please enter all the fields", "One or more empty fields", MessageBoxButtons::OK);
+			return;
 		}
 		try {
 			String^ connString = rr;

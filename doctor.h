@@ -83,6 +83,13 @@ public:
 	}
 	void change_detail(String^ f, String^ l, String^ i, String^ p, String^ in, String^ se, String^ a, String^ ph)
 	{
+
+		if (f->Length == 0 || l->Length == 0 || i->Length == 0 || p->Length == 0
+			|| in->Length == 0 || se->Length == 0 || a->Length == 0 || ph->Length == 0)
+		{
+			MessageBox::Show("Please enter all the fields", "One or more empty fields", MessageBoxButtons::OK);
+			return;
+		}
 		id = i;
 		password = p;
 		first_name = f;
@@ -91,11 +98,6 @@ public:
 		security_q = se;
 		phone_no = ph;
 		age = a;
-		if (first_name->Length == 0 || last_name->Length == 0 || phone_no->Length == 0 || id->Length == 0
-			|| password->Length == 0 || specialization->Length == 0 || age->Length == 0)
-		{
-			MessageBox::Show("Please enter all the fields", "One or more empty fields", MessageBoxButtons::OK);
-		}
 		try {
 			String^ connString = rr;
 			SqlConnection sqlConn(connString);
@@ -112,7 +114,6 @@ public:
 			command.Parameters->AddWithValue("@security_q", security_q);
 			command.ExecuteNonQuery();
 			MessageBox::Show("changed successfully", "change information", MessageBoxButtons::OK);
-
 		}
 		catch (Exception^ ex)
 		{
@@ -121,7 +122,6 @@ public:
 	}
 	void hiredoctor(String^ i, String^ p, String^ f, String^ l, String^ in, String^ a, String^ ph, String^ se, String^ con)
 	{
-
 		id = i;
 		password = p;
 		first_name = f;
