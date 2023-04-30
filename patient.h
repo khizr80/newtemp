@@ -23,8 +23,8 @@ public:
 			MessageBox::Show("Please enter email and password","Email or Password Empty", MessageBoxButtons::OK);
 			return 0;
 		}
-
-		try {
+		try 
+		{
 			String^ connString = rr;
 			SqlConnection sqlConn(connString);
 			sqlConn.Open();
@@ -33,8 +33,8 @@ public:
 			command.Parameters->AddWithValue("@no", id);
 			command.Parameters->AddWithValue("@pwd", password);
 			SqlDataReader^ reader = command.ExecuteReader();
-			if (reader->Read()) {
-				
+			if (reader->Read()) 
+			{
 				this->id = reader->GetString(0);
 				 this->password = reader->GetString(1);
 				 first_name = reader->GetString(2);
@@ -48,8 +48,7 @@ public:
 					//+ user->security_q + user->age + user->phone_no + user->role, "message", MessageBoxButtons::OK);
 			}
 			else {
-				MessageBox::Show("Email or password is incorrect",
-					"Email or Password Error", MessageBoxButtons::OK);
+				MessageBox::Show("Email or password is incorrect","Email or Password Error", MessageBoxButtons::OK);
 				return 0;
 			}
 		}
@@ -57,7 +56,6 @@ public:
 			MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
 			return 0;
 		}
-	
 	}
 	void signup(String^i, String^ p, String^ f, String^ l, String^ in, String^ se, String^ a, String^ ph, String^ con)
 	{
@@ -131,6 +129,12 @@ public:
 	}
 	void change_detail(String^ f, String^ l, String^ i, String^ p, String^ in, String^ se, String^ a, String^ ph)
 	{
+		if (f->Length == 0 || l->Length == 0 || i->Length == 0 || p->Length == 0
+			|| in->Length == 0 || se->Length == 0 || ph->Length == 0)
+		{
+			MessageBox::Show("Please enter all the fields", "One or more empty fields", MessageBoxButtons::OK);
+			return;
+		}
 		id = i;
 		password = p;
 		first_name = f;
@@ -139,12 +143,6 @@ public:
 		security_q = se;
 		phone_no = ph;
 		age = a;
-		if (first_name->Length == 0 || last_name->Length == 0 || phone_no->Length == 0 || id->Length == 0
-			|| password->Length == 0 || insurance_no->Length == 0 || age->Length == 0)
-		{
-			MessageBox::Show("Please enter all the fields", "One or more empty fields", MessageBoxButtons::OK);
-			return;
-		}
 		try {
 			String^ connString = rr;
 			SqlConnection sqlConn(connString);
@@ -173,8 +171,6 @@ public:
 			String^ connString = rr;
 			SqlConnection sqlConn(connString);
 			sqlConn.Open();
-
-			// Check if there are already three appointments on the given date
 			String^ sqlCountQuery = "SELECT COUNT(*) FROM [appointment] WHERE date = @date;";
 			SqlCommand countCommand(sqlCountQuery, % sqlConn);
 			countCommand.Parameters->AddWithValue("@date", date);
@@ -184,8 +180,6 @@ public:
 				MessageBox::Show("Failed to make appointment", "Appointment limit reached", MessageBoxButtons::OK);
 				return;
 			}
-
-			// Insert new appointment
 			String^ sqlInsertQuery = "INSERT INTO [appointment] (doctor_id, patient_id, date,doctor_name) VALUES (@name, @id, @date,@doc_name);";
 			SqlCommand insertCommand(sqlInsertQuery, % sqlConn);
 			insertCommand.Parameters->AddWithValue("@name", doctor_id);
@@ -197,7 +191,6 @@ public:
 		}
 		catch (Exception^ e) {
 			MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
-			//return 0;
 		}
 	}
 	void cancel_appointment()

@@ -53,25 +53,17 @@ namespace temp {
 		}
 	private: System::Windows::Forms::Label^ login_panel_password_label;
 	protected:
-
 	private: System::Windows::Forms::Label^ login_panel_id_label;
 	protected:
-
 	private: System::Windows::Forms::TextBox^ login_panel_id_textbox;
-
 	private: System::Windows::Forms::TextBox^ login_panel_password_textbox;
-
 	private: System::Windows::Forms::Button^ login_button;
 	private: System::Windows::Forms::Panel^ login_panel;
 	private: System::Windows::Forms::Button^ login_panel_signup_button;
-
 	private: System::Windows::Forms::Panel^ signup_panel;
 	private: System::Windows::Forms::Button^ sign_up_panel__sign_up_button;
-
 	private: System::Windows::Forms::Label^ signup_securityq;
 	private: System::Windows::Forms::TextBox^ sign_up_security_q_textbox;
-
-
 	private: System::Windows::Forms::Label^ signup_confirnpassword_label;
 	private: System::Windows::Forms::TextBox^ sign_up_confirm_password_textbox;
 	private: System::Windows::Forms::Label^ signup_password_label;
@@ -99,7 +91,6 @@ namespace temp {
 	private: System::Windows::Forms::TextBox^ forget_password_panel_id_textbox;
 	private: System::Windows::Forms::Button^ login_panel_back_button;
 	private: System::Windows::Forms::Panel^ patient_panel;
-
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::Button^ patient_panel_logout_button;
 	private: System::Windows::Forms::Button^ patient_panel_view_detail_button;
@@ -142,25 +133,15 @@ namespace temp {
 	private: System::Windows::Forms::Button^ admin_panel_fire_doctor;
 	private: System::Windows::Forms::Button^ patient_panel_make_appointment_button;
 	private: System::Windows::Forms::Panel^ make_appointment_panel;
-private: System::Windows::Forms::Button^ make_appointment_back_button;
-
+	private: System::Windows::Forms::Button^ make_appointment_back_button;
 	private: System::Windows::Forms::Button^ make_appointment_ok_button;
 	private: System::Windows::Forms::ComboBox^ make_appointment_panel_combo_box;
 	private: System::Windows::Forms::DateTimePicker^ dateTimePicker1;
-private: System::Windows::Forms::Button^ patient_panel_cancel_button;
-
-
-
-
-
-private: System::Windows::Forms::Panel^ cancel_appointment_panel;
-private: System::Windows::Forms::Button^ cancel_appointment_back_button;
-
-private: System::Windows::Forms::Button^ cancel_appointment_ok_button;
-private: System::Windows::Forms::ComboBox^ cancelappointment_combobox;
-
-
-
+	private: System::Windows::Forms::Button^ patient_panel_cancel_button;
+	private: System::Windows::Forms::Panel^ cancel_appointment_panel;
+	private: System::Windows::Forms::Button^ cancel_appointment_back_button;
+	private: System::Windows::Forms::Button^ cancel_appointment_ok_button;
+	private: System::Windows::Forms::ComboBox^ cancelappointment_combobox;
 
 
 	private:
@@ -1190,7 +1171,6 @@ private: System::Windows::Forms::ComboBox^ cancelappointment_combobox;
 					doctor_panel->Visible = true; // hide the panel
 					login_panel_signup_button->Visible = true;
 				}
-				
 			}
 			else if (ismain_panel_admin_button == true)
 			{
@@ -1263,12 +1243,10 @@ private: System::Windows::Forms::ComboBox^ cancelappointment_combobox;
 			}
 			else if (ismain_panel_admin_button == true)
 			{
-				
 				usera->forget_passowrd(id, security_q);
 			}
 			forget_password_panel_id_textbox->Text="";
 			forget_password_panel_security_q_textbox->Text="";
-
 		}
 		private: System::Void login_panel_exit_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
@@ -1285,41 +1263,39 @@ private: System::Windows::Forms::ComboBox^ cancelappointment_combobox;
 			patient_panel->Visible = false; // hide the panel
 		}
 		private: System::Void patient_panel_view_detail_button_Click(System::Object^ sender, System::EventArgs^ e) 
-	{
-		view_detail_panel->Visible = true; // show the panel
-		patient_panel->Visible = false; // hide the panel
-		view_detail_panel_first_name_textbox->Text = userp->first_name;
-		view_detail_panel_last_name_textbox->Text = userp->last_name;
-		view_detail_panel_id_textbox->Text = userp->id;
-		view_detail_panel_insurance_no_textbox->Text = userp->insurance_no;
-		view_detail_panel_age_textbox->Text = userp->age;
-		view_detail_panel_phone_no_textbox->Text = userp->phone_no;
-		view_detail_panel_password_textbox->Text = userp->password;
-		view_detail_security_q_textbox->Text = userp->security_q;
-
-	}
+		{
+			view_detail_panel->Visible = true; // show the panel
+			patient_panel->Visible = false; // hide the panel
+			view_detail_panel_first_name_textbox->Text = userp->first_name;
+			view_detail_panel_last_name_textbox->Text = userp->last_name;
+			view_detail_panel_id_textbox->Text = userp->id;
+			view_detail_panel_insurance_no_textbox->Text = userp->insurance_no;
+			view_detail_panel_age_textbox->Text = userp->age;
+			view_detail_panel_phone_no_textbox->Text = userp->phone_no;
+			view_detail_panel_password_textbox->Text = userp->password;
+			view_detail_security_q_textbox->Text = userp->security_q;
+		}
 		private: System::Void view_detail_panel_back_button_Click(System::Object^ sender, System::EventArgs^ e) 
-{
-	this->view_detail_panel_insurance_no_label->Text = L"insurance no";
-	if(ismain_panel_patient_button==1)
-	{
-		view_detail_panel->Visible = false; // show the panel
-		patient_panel->Visible = true; // hide the panel 
-	}
-	else if(ismain_panel_doctor_button==1)
-	{
-		view_detail_panel->Visible = false; // show the panel
-		doctor_panel->Visible = true; // hide the panel
-	}
-	else
-	{
-		view_detail_panel->Visible = false; // show the panel
-		admin_panel->Visible = true;
-		this->view_detail_panel_change_button->Text = L"Change";
-		view_detail_panel_id_textbox->Enabled = false;
-	}
-	
-}
+		{
+			this->view_detail_panel_insurance_no_label->Text = L"insurance no";
+			if(ismain_panel_patient_button==1)
+			{
+				view_detail_panel->Visible = false; // show the panel
+				patient_panel->Visible = true; // hide the panel 
+			}
+			else if(ismain_panel_doctor_button==1)
+			{
+				view_detail_panel->Visible = false; // show the panel
+				doctor_panel->Visible = true; // hide the panel
+			}
+			else
+			{
+				view_detail_panel->Visible = false; // show the panel
+				admin_panel->Visible = true;
+				this->view_detail_panel_change_button->Text = L"Change";
+				view_detail_panel_id_textbox->Enabled = false;
+			}
+		}
 		private: System::Void view_detail_panel_change_button_Click(System::Object^ sender, System::EventArgs^ e)
 		{
 			String^ f = view_detail_panel_first_name_textbox->Text;
@@ -1363,17 +1339,14 @@ private: System::Windows::Forms::ComboBox^ cancelappointment_combobox;
 		{
 			if (ismain_panel_admin_button == 1)
 			{
-				String^ y = "";
-				y = complain_panel_textbox->Text;
+				String^y = complain_panel_textbox->Text;
 				userd->firedoctor(y);
 				complain_panel_textbox->Text = "";
 			}
 			else
 			{
-				String^ y = "NULL";
-				y = complain_panel_textbox->Text;
-				Patient^ x = gcnew Patient();
-				x->complain(y);
+				String^ y = complain_panel_textbox->Text;
+				userp->complain(y);
 				complain_panel_textbox->Text = "";
 			}
 		}
@@ -1381,17 +1354,11 @@ private: System::Windows::Forms::ComboBox^ cancelappointment_combobox;
 		{
 			complain_panel->Visible = false; // show the panel
 			if (ismain_panel_patient_button == true)
-			{
 				patient_panel->Visible = true; // hide the panel
-			}
 			else if(ismain_panel_doctor_button==1)
-			{
 				doctor_panel->Visible = true; // hide the panel
-			}
 			else
-			{
 				admin_panel->Visible = true;
-			}
 		}
 		private: System::Void main_panel_exit_button_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
@@ -1529,6 +1496,8 @@ private: System::Windows::Forms::ComboBox^ cancelappointment_combobox;
 			cancel_appointment_panel->Visible = true;
 			patient_panel->Visible = false;
 		}
+			   String^ a;
+			   DateTime b;
 		private: System::Void cancelappointment_combobox_DropDown(System::Object^ sender, System::EventArgs^ e)
 		{
 			try {
