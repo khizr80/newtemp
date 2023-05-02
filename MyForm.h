@@ -36,6 +36,7 @@ namespace temp {
 			main_panel ->Visible= true;
 			login_panel->Visible = false;
 			make_appointment_panel->Visible = false;
+			cancel_appointment_panel->Visible = false;
 			//TODO: Add the constructor code here
 			//
 		}
@@ -1484,6 +1485,7 @@ namespace temp {
 			{
 				String ^x=userp->getid();
 				userp->make_appointment(selectedDate,y_id,x,y_name);
+				make_appointment_panel_combo_box->Text="";
 			}
 		}
 		private: System::Void make_appointment_back_button_Click(System::Object^ sender, System::EventArgs^ e) 
@@ -1514,7 +1516,7 @@ namespace temp {
 					String^ doctorId = reader->GetString(0);
 					DateTime date = reader->GetDateTime(1);
 					String^ doctorName = reader->GetString(2);
-					String^ doctorInfo = "Doctor Name: " + doctorName + " Date: " + date.ToString("yyyy-MM-dd");
+					String^ doctorInfo = "Doctor Name:" + doctorName  + " docotor id;"+doctorId+ " Date,"+date.ToString("yyyy-MM-dd");
 					cancelappointment_combobox->Items->Add(doctorInfo);
 				}
 				reader->Close();
@@ -1530,31 +1532,13 @@ namespace temp {
 			cancel_appointment_panel->Visible = false;
 			patient_panel->Visible = true;
 		}
-		private: System::Void cancel_appointment_ok_button_Click(System::Object^ sender, System::EventArgs^ e) 
+		private: System::Void cancel_appointment_ok_button_Click(System::Object^ sender, System::EventArgs^ e)
 		{
-			try
-			{
-				String^selectedOption = cancelappointment_combobox->SelectedItem->ToString();
-				String^ connString = rr;
-				SqlConnection sqlConn(connString);
-				sqlConn.Open();
-				String^ x;
-				String^ sqlQuery = "DELETE FROM [appointment] WHERE id=@complain";
-				SqlCommand command(sqlQuery, % sqlConn);
-				command.Parameters->AddWithValue("@complain", x);
-				int rowsAffected = command.ExecuteNonQuery();
-				if (rowsAffected > 0) {
-					MessageBox::Show("Success", "Cancel Appointment", MessageBoxButtons::OK);
-				}
-				else {
-					MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
-				}
-			}
-			catch (Exception^ e) 
-			{
-				MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
-			}
+			
+				String^ selectedOption = cancelappointment_combobox->SelectedItem->ToString();
+				userp->cancel_appointment(selectedOption);
 		}
+
 		
 	};
 }

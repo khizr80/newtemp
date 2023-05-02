@@ -8,7 +8,7 @@ using namespace System::Collections;
 using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
-
+using namespace System::Globalization;
 public ref class Patient : public User
 {
 public:
@@ -165,39 +165,142 @@ public:
 			MessageBox::Show("Failed to register new user", "Register Failure", MessageBoxButtons::OK);
 		}
 	}
-	void make_appointment(DateTime^ date, String^ doctor_id, String^ iid,String^doc_name)
+	void make_appointment(DateTime^ date, String^ doctor_id, String^ iid, String^ doc_name)
 	{
 		try {
 			String^ connString = rr;
 			SqlConnection sqlConn(connString);
 			sqlConn.Open();
-			String^ sqlCountQuery = "SELECT COUNT(*) FROM [appointment] WHERE date = @date;";
+
+			// Check if patient already has an appointment with the same doctor on the given date
+			String^ sqlCountQuery = "SELECT COUNT(*) FROM [appointment] WHERE date = @date AND patient_id = @id AND doctor_id = @doc_id;";
 			SqlCommand countCommand(sqlCountQuery, % sqlConn);
 			countCommand.Parameters->AddWithValue("@date", date);
+			countCommand.Parameters->AddWithValue("@id", iid);
+			countCommand.Parameters->AddWithValue("@doc_id", doctor_id);
 			int appointmentCount = (int)countCommand.ExecuteScalar();
-			if (appointmentCount >= 3) 
+
+			if (appointmentCount >= 1)
 			{
-				MessageBox::Show("Failed to make appointment", "Appointment limit reached", MessageBoxButtons::OK);
+				MessageBox::Show("Failed to make appointment", "Patient already has an appointment with the same doctor on the given date", MessageBoxButtons::OK);
 				return;
 			}
-			String^ sqlInsertQuery = "INSERT INTO [appointment] (doctor_id, patient_id, date,doctor_name) VALUES (@name, @id, @date,@doc_name);";
+
+			// Check if the doctor already has 3 appointments on the given date
+			sqlCountQuery = "SELECT COUNT(*) FROM [appointment] WHERE date = @date AND doctor_id = @doc_id;";
+			countCommand.CommandText = sqlCountQuery;
+			countCommand.Parameters->Clear();
+			countCommand.Parameters->AddWithValue("@date", date);
+			countCommand.Parameters->AddWithValue("@doc_id", doctor_id);
+			appointmentCount = (int)countCommand.ExecuteScalar();
+
+			if (appointmentCount >= 3)
+			{
+				MessageBox::Show("Failed to make appointment", "Appointment limit reached for the given doctor on the given date", MessageBoxButtons::OK);
+				return;
+			}
+
+			// Insert the appointment
+			String^ sqlInsertQuery = "INSERT INTO [appointment] (doctor_id, patient_id, date, doctor_name) VALUES (@doc_id, @id, @date, @doc_name);";
 			SqlCommand insertCommand(sqlInsertQuery, % sqlConn);
-			insertCommand.Parameters->AddWithValue("@name", doctor_id);
-			insertCommand.Parameters->AddWithValue("@date", date);
+			insertCommand.Parameters->AddWithValue("@doc_id", doctor_id);
 			insertCommand.Parameters->AddWithValue("@id", iid);
+			insertCommand.Parameters->AddWithValue("@date", date);
 			insertCommand.Parameters->AddWithValue("@doc_name", doc_name);
 			insertCommand.ExecuteNonQuery();
+
 			MessageBox::Show("Success", "Appointment book", MessageBoxButtons::OK);
 		}
 		catch (Exception^ e) {
 			MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
 		}
 	}
-	void cancel_appointment()
+	void cancel_appointment(String^ selectedOption)
 	{
+		try
+		{
+			String^ connString = rr;
+			SqlConnection sqlConn(connString);
 
+			// Extracting values from input string
+			String^ doctorName;
+			String^ doctorId;
+			String^ date;
+			bool isDoctorNameComplete = false;
+			bool isDoctorIdComplete = false;
+			int l = selectedOption->Length;
+			for (int i = 0;i < l;i++)
+			{
+				if (selectedOption[i] == ':')
+				{
+					isDoctorNameComplete = true;
+				}
+				else if (isDoctorNameComplete == true && selectedOption[i] != ' ')
+				{
+					doctorName += selectedOption[i];
+				}
+				else if (selectedOption[i] == ' '&& isDoctorNameComplete == true)
+				{
+					break;
+				}
+			}
+			isDoctorNameComplete = false;
+			for (int i = 0;i < l;i++)
+			{
+				if (selectedOption[i] == ';')
+				{
+					isDoctorNameComplete = true;
+				}
+				else if (isDoctorNameComplete == true&&selectedOption[i] == ' ')
+				{
+					break;
+				}
+				else if (isDoctorNameComplete == true && selectedOption[i] != ' ')
+				{
+					doctorId += selectedOption[i];
+				}
+			}
+			isDoctorNameComplete = false;
+			for (int i = 0;i < l;i++)
+			{
+				if (selectedOption[i] == ',')
+				{
+					isDoctorNameComplete = true;
+				}
+				else if (isDoctorNameComplete == true && selectedOption[i] == ' ')
+				{
+					break;
+				}
+				else if (isDoctorNameComplete == true && selectedOption[i] != ' ')
+				{
+					date += selectedOption[i];
+				}
+			}
+			DateTime dat = DateTime::ParseExact(date, "yyyy-MM-dd", CultureInfo::InvariantCulture);
+
+			sqlConn.Open();
+			String^ sqlQuery = "DELETE FROM [appointment] WHERE doctor_id=@doc_id AND patient_id=@pat_id AND date=@date";
+			SqlCommand command(sqlQuery, % sqlConn);
+			command.Parameters->AddWithValue("@doc_id", doctorId);
+			command.Parameters->AddWithValue("@pat_id", getid());
+			command.Parameters->AddWithValue("@date", dat);
+			int rowsAffected = command.ExecuteNonQuery();
+			if (rowsAffected > 0)
+			{
+				MessageBox::Show("Success", "Cancel Appointment", MessageBoxButtons::OK);
+			}
+			else
+			{
+				MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
+			}
+		}
+		catch (Exception^ e)
+		{
+			MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
+		}
 	}
-	String^ getid()
+
+		String^ getid()
 	{
 		return id;
 	}
