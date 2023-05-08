@@ -11,6 +11,7 @@ using namespace System::Drawing;
 public ref class admin : public User
 {
 public:
+	String^ complain;
 	String^ revenue;
 	bool login(String^ i, String^ pass)
 	{
@@ -82,4 +83,5 @@ public:
 			MessageBox::Show("Id or security question incorrect", "Forget password Failure", MessageBoxButtons::OK);
 		}
 	}
+
 };

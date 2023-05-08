@@ -18,7 +18,9 @@ public:
 	String^ security_q;
 	String^ confirm_password;
 	String^ age;
-	String^ rr = "Data Source=DESKTOP-9T5F2B3;Initial Catalog=mono;Integrated Security=True";
+	String^ script;
+	String^ scriptAdd;
+	String^ rr = "Data Source=I-MAC\\SQLEXPRESS;Initial Catalog=mono;Integrated Security=True";
 	void complain(String^ x)
 	{
 		try {
@@ -36,4 +38,5 @@ public:
 
 		}
 	}
+
 };

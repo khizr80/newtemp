@@ -93,8 +93,8 @@ public:
 			command.Parameters->AddWithValue("@phone_no", phone_no);
 			command.Parameters->AddWithValue("@password", password);
 			command.Parameters->AddWithValue("@security_q", security_q);
+
 			command.ExecuteNonQuery();
-			
 		}
 		catch (Exception^ ex)
 		{
@@ -300,8 +300,9 @@ public:
 		}
 	}
 
-		String^ getid()
+	String^ getid()
 	{
 		return id;
 	}
+
 };

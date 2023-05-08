@@ -184,4 +184,22 @@ public:
 			MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
 		}
 	}
+	void attendence()
+	{
+		try {
+			String^ connString = rr;
+			SqlConnection sqlConn(connString);
+			sqlConn.Open();
+			String^ sqlQuery = "UPDATE [doctor] SET Attendence = 'Present' WHERE Id = @Id";
+			SqlCommand command(sqlQuery, % sqlConn);
+			command.Parameters->AddWithValue("@Id", id);
+			command.ExecuteNonQuery();
+			MessageBox::Show("Attendence marked", "Attendence", MessageBoxButtons::OK);
+		}
+		catch (Exception^ e)
+		{
+			MessageBox::Show("Failed to connect to database", "Database Connection Error", MessageBoxButtons::OK);
+		}
+	}
+
 };
